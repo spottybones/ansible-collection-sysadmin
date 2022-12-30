@@ -1,2 +1,21 @@
 ---
 # defaults file for ansible-role-unbound
+
+# Example:
+#
+# Note: aliases allow you to assign additional names to
+# an IP address. They do not generate CNAME records as
+# unbound doesn't resolve those back to IP addresses on
+# its own.
+#
+# ---
+# unbound_local_records:
+#   - site: site description
+#     domain: subdom1.example.com
+#     hosts:
+#       - name: host1
+#         ip: 10.0.0.1
+#         aliases:
+#           - host1-alias
+
+unbound_local_records: []

@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+server:
+{% for site in unbound_local_records %}
+
+    # for Site {{ site.site }}
+    local-zone: {{ site.domain }}. static
+{% for host in site.hosts %}
+
+    local-data: "{{ host.name }}.{{ site.domain }}. A {{ host.ip }}"
+    local-data-ptr: "{{ host.ip }} {{ host.name }}.{{ site.domain }}."
+{% if host.aliases is defined %}
+{% for alias in host.aliases %}
+    local-data: "{{ alias }}.{{ site.domain }}. A {{ host.ip }}"
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}

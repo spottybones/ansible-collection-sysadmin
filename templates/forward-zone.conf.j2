@@ -1,0 +1,13 @@
+forward-zone:
+    # Forward all queries (except those in cache and local zone) to
+    # upstream recursive servers
+    name: "."
+    # Queries to this forward zone use TLS
+    forward-tls-upstream: yes
+
+    # https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers
+
+    ## {{ unbound_forwarders.description }}
+{% for forwarder in unbound_forwarders.forwarders %}
+    forward-addr: {{ forwarder }}
+{% endfor %}

@@ -1,5 +1,9 @@
 ---
 # tasks file for ansible-role-unbound
+
+- name: Disable and Uninstall Bind
+  include_tasks: no_bind.yml
+
 - name: Install required packages
   become: yes
   package:

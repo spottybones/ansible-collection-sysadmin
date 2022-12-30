@@ -1,2 +1,53 @@
 ---
 # tasks file for ansible-role-unbound
+- name: Install required packages
+  become: yes
+  package:
+    name: unbound
+    state: present
+  tags:
+    - install_packages
+
+- name: Enable Unbound Service
+  become: yes
+  ansible.builtin.service:
+    name: unbound
+    enabled: true
+  tags:
+    - configure_service
+
+- name: Install server clause template
+  become: yes
+  ansible.builtin.template:
+    src: ../templates/server.conf.j2
+    dest: /etc/unbound/unbound.conf.d/server.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Install forward-zone clause template
+  become: yes
+  ansible.builtin.template:
+    src: ../templates/forward-zone.conf.j2
+    dest: /etc/unbound/unbound.conf.d/forward-zone.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Install local-data template
+  become: yes
+  ansible.builtin.template:
+    src: ../templates/local-records.conf.j2
+    dest: /etc/unbound/unbound.conf.d/local-records.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service

@@ -1,7 +1,14 @@
 ---
 # defaults file for ansible-role-unbound
 
-# Example:
+# Forwarders - this role uses TLS
+unbound_forwarders:
+  description: Google Public DNS
+  forwarders:
+    - 8.8.8.8@853#dns.google
+    - 8.8.4.4@853#dns.google
+
+# Example: local records
 #
 # Note: aliases allow you to assign additional names to
 # an IP address. They do not generate CNAME records as

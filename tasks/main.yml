@@ -5,7 +5,7 @@
   include_tasks: no_bind.yml
 
 - name: Install required packages
-  become: yes
+  become: true
   package:
     name: unbound
     state: present
@@ -13,7 +13,7 @@
     - install_packages
 
 - name: Enable Unbound Service
-  become: yes
+  become: true
   ansible.builtin.service:
     name: unbound
     enabled: true
@@ -21,9 +21,9 @@
     - configure_service
 
 - name: Install server clause template
-  become: yes
+  become: true
   ansible.builtin.template:
-    src: ../templates/server.conf.j2
+    src: server.conf.j2
     dest: /etc/unbound/unbound.conf.d/server.conf
     owner: root
     group: root
@@ -33,9 +33,9 @@
     - configure_service
 
 - name: Install forward-zone clause template
-  become: yes
+  become: true
   ansible.builtin.template:
-    src: ../templates/forward-zone.conf.j2
+    src: forward-zone.conf.j2
     dest: /etc/unbound/unbound.conf.d/forward-zone.conf
     owner: root
     group: root
@@ -45,9 +45,9 @@
     - configure_service
 
 - name: Install local-data template
-  become: yes
+  become: true
   ansible.builtin.template:
-    src: ../templates/local-records.conf.j2
+    src: local-records.conf.j2
     dest: /etc/unbound/unbound.conf.d/local-records.conf
     owner: root
     group: root

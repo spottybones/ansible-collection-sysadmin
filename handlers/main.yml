@@ -7,3 +7,9 @@
     state: restarted
   tags:
     - configure_service
+
+# reload the systemd daemon
+- name: Reload systemd daemon
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true

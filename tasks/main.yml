@@ -2,7 +2,7 @@
 # tasks file for ansible-role-unbound
 
 - name: Disable and Uninstall Bind
-  include_tasks: no_bind.yml
+  import_tasks: no_bind.yml
 
 - name: Install required packages
   become: true
@@ -53,5 +53,10 @@
     group: root
     mode: '0644'
   notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Set systemd overrides for unbound
+  import_tasks: systemd_override.yml
   tags:
     - configure_service

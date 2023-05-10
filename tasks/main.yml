@@ -56,6 +56,18 @@
   tags:
     - configure_service
 
+- name: Install root-auto-trust-anchor template
+  become: true
+  ansible.builtin.template:
+    src: root-auto-trust-anchor-file.conf.j2
+    dest: /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
 - name: Set systemd overrides for unbound
   import_tasks: systemd_override.yml
   tags:

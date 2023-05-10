@@ -27,3 +27,8 @@ unbound_forwarders:
 #           - host1-alias
 
 unbound_local_records: []
+
+# Enable DNSSEC - determines if the auto trust anchor file provided by the
+# package is defined. If not then DNSSEC is disabled. This may be desired
+# for forwarders that do their own validation (see Quad9 recommendation)
+unbound_dnssec_enabled: true

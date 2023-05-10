@@ -5,7 +5,11 @@ forward-zone:
     # upstream recursive servers
     name: "."
     # Queries to this forward zone use TLS
+{% if unbound_forwarders.forward_tls_upstream %}
     forward-tls-upstream: yes
+{% else %}
+    forward-tls-upstream: no
+{% endif %}
 
     # https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers
 

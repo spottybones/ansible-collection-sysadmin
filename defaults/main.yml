@@ -1,9 +1,10 @@
 ---
 # defaults file for ansible-role-unbound
 
-# Forwarders - this role uses TLS
+# Forwarders - by default this role uses TLS, but can be changed with group_vars
 unbound_forwarders:
   description: Google Public DNS
+  forward_tls_upstream: true
   forwarders:
     - 8.8.8.8@853#dns.google
     - 8.8.4.4@853#dns.google

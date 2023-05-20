@@ -1,0 +1,9 @@
+---
+# tasks file for host_update
+- name: Print debug info
+  ansible.builtin.include_tasks: '{{ item }}'
+  with_first_found:
+    - files:
+      - '{{ ansible_distribution | lower }}.yml'
+      - '{{ ansible_os_family | lower }}.yml'
+      skip: true

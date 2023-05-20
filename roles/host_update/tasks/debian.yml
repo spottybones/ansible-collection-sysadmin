@@ -1,0 +1,25 @@
+---
+- name: Upgrade all packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+    upgrade: dist
+
+- name: Restart needed libraries/services
+  become: true
+  ansible.builtin.command:
+    cmd: needrestart -f noninteractive -ra
+  changed_when: false
+
+- name: Find newest kernel number /boot
+  ansible.builtin.shell:
+    cmd: ls -1 /boot/vmlinuz* | sort -V | tail -1
+  changed_when: false
+  register: latest_kernel
+
+- name: Reboot if newer kernel available
+  vars:
+    kernel_version: "{{ ansible_kernel }}"
+  ansible.builtin.reboot:
+  when: kernel_version not in latest_kernel.stdout

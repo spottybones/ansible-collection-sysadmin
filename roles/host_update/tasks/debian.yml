@@ -14,7 +14,11 @@
 
 - name: Find newest kernel number /boot
   ansible.builtin.shell:
-    cmd: ls -1 /boot/vmlinuz* | sort -V | tail -1
+    cmd: |
+      set -o pipefail
+      ls -1 /boot/vmlinuz* | sort -V | tail -1
+  args:
+    executable: /bin/bash
   changed_when: false
   register: latest_kernel
 

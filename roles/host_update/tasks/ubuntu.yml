@@ -21,4 +21,4 @@
 - name: Reboot if required
   become: true
   ansible.builtin.reboot:
-  when: st.stat.exists == True
+  when: st.stat.exists

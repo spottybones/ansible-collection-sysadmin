@@ -1,0 +1,5 @@
+---
+# defaults file for common_packages
+common_packages:
+  - avahi-daemon
+  - needrestart

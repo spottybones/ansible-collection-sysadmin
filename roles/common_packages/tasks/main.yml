@@ -1,0 +1,21 @@
+---
+# tasks file for common_packages
+- name: Include variables (common_packages) based on distro, or default if not found
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_distribution | lower }}.yml'
+        - '{{ ansible_os_family | lower }}.yml'
+        - main.yml
+      paths:
+        - vars
+        - defaults
+
+- name: Install common packages
+  ansible.builtin.include_tasks: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution | lower }}.yml'
+        - '{{ ansible_os_family | lower }}.yml'
+      skip: true

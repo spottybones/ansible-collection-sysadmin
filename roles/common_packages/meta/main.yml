@@ -1,0 +1,13 @@
+galaxy_info:
+  author: Scott Burns
+  description: Install common software packages used by roles in the spottybones.sysadmin collection.
+  company: Cipher23 LLC
+
+  license: MIT
+
+  min_ansible_version: "2.1"
+
+  galaxy_tags:
+    - system
+
+dependencies: []

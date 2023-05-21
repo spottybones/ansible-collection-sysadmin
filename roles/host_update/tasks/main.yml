@@ -1,6 +1,6 @@
 ---
 # tasks file for host_update
-- name: Print debug info
+- name: Upgrade all packages (OS / distro dependent)
   ansible.builtin.include_tasks: '{{ item }}'
   with_first_found:
     - files:

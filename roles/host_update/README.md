@@ -17,7 +17,9 @@ None.
 Dependencies
 ------------
 
-None.
+This role assumes that spottybones.sysadmin.common_packages has
+been run to ensure the "needrestart" package is installed (on Debian
+based distros.)
 
 Example Playbook
 ----------------

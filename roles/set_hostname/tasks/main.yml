@@ -1,0 +1,36 @@
+---
+# tasks file for hostname
+- name: Set Linux hostname
+  become: true
+  when: ansible_system == "Linux"
+  block:
+
+    - name: Set Linux hostname
+      ansible.builtin.hostname:
+        name: "{{ set_hostname_hostname }}"
+        use: systemd
+
+    - name: Set /etc/hosts entries
+      ansible.builtin.template:
+        src: linux_etc_hosts.j2
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+        backup: true
+
+    # If cloud-init is installed we need to make sure that preserve_hostname is set
+    # to True that that reboots don't rename the host to the default name assigned
+    # when it was created.
+    - name: Check for existence of /etc/cloud/cloud.cfg
+      ansible.builtin.stat:
+        path: /etc/cloud/cloud.cfg
+      register: cloud_cfg
+
+    - name: Ensure preserve_hostname set to true in /etc/cloud/cloug.cfg
+      ansible.builtin.lineinfile:
+        dest: /etc/cloud/cloud.cfg
+        regexp: "^preserve_hostname:"
+        line: "preserve_hostname: true"
+        state: present
+      when: cloud_cfg.stat.exists

@@ -1,0 +1,3 @@
+---
+# defaults file for set_hostname
+set_hostname_hostname: "{{ ansible_host }}"

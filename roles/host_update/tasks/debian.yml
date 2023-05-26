@@ -9,7 +9,7 @@
 - name: Restart needed libraries/services
   become: true
   ansible.builtin.command:
-    cmd: needrestart -f noninteractive -ra
+    cmd: needrestart -ra
   changed_when: false
 
 - name: Find newest kernel number /boot

@@ -1,3 +1,0 @@
-[submodule "roles/unbound_dns"]
-	path = roles/unbound_dns
-	url = https://github.com/spottybones/ansible-role-unbound.git

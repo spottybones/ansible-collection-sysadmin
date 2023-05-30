@@ -1,0 +1,25 @@
+---
+# configure systemd to slow down unbound restarts to address failure
+# of service to start due to timing out before the ethernet interface
+# comes UP
+
+- name: Create override directory for unbound service
+  become: true
+  file:
+    path: /etc/systemd/system/unbound.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create unbound.service.d override dropin
+  become: true
+  template:
+    src: unbound-systemd-override-conf.j2
+    dest: /etc/systemd/system/unbound.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload systemd daemon
+  tags:
+    - configure_service

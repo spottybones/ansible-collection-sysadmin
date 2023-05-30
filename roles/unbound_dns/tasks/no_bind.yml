@@ -1,0 +1,10 @@
+---
+# ensure that Bind is disabled and uninstalled
+- name: Uninstall Bind9
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - bind9
+    - bind9utils

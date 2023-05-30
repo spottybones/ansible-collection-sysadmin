@@ -1,0 +1,74 @@
+---
+# tasks file for ansible-role-unbound
+
+- name: Disable and Uninstall Bind
+  import_tasks: no_bind.yml
+
+- name: Install required packages
+  become: true
+  package:
+    name: unbound
+    state: present
+  tags:
+    - install_packages
+
+- name: Enable Unbound Service
+  become: true
+  ansible.builtin.service:
+    name: unbound
+    enabled: true
+  tags:
+    - configure_service
+
+- name: Install server clause template
+  become: true
+  ansible.builtin.template:
+    src: server.conf.j2
+    dest: /etc/unbound/unbound.conf.d/server.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Install forward-zone clause template
+  become: true
+  ansible.builtin.template:
+    src: forward-zone.conf.j2
+    dest: /etc/unbound/unbound.conf.d/forward-zone.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Install local-data template
+  become: true
+  ansible.builtin.template:
+    src: local-records.conf.j2
+    dest: /etc/unbound/unbound.conf.d/local-records.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Install root-auto-trust-anchor template
+  become: true
+  ansible.builtin.template:
+    src: root-auto-trust-anchor-file.conf.j2
+    dest: /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Unbound
+  tags:
+    - configure_service
+
+- name: Set systemd overrides for unbound
+  import_tasks: systemd_override.yml
+  tags:
+    - configure_service

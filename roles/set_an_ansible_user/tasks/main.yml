@@ -1,0 +1,28 @@
+---
+# tasks file for set_an_ansible_user
+- name: Create {{ an_ansible_user_comment }} ({{ an_ansible_user }})
+  become: true
+  ansible.builtin.user:
+    name: "{{ an_ansible_user }}"
+    comment: "{{ an_ansible_user_comment }}"
+    groups: users,adm
+    append: true
+    password_lock: true
+    shell: /bin/bash
+    state: present
+
+- name: Configure sudo access for {{ an_ansible_user }}
+  become: true
+  ansible.builtin.template:
+    src: etc_sudoersd_ansible.j2
+    dest: /etc/sudoers.d/99-ansible-user
+    owner: root
+    group: root
+    mode: u=r,g=r
+
+- name: Set SSH authorized_key for {{ an_ansible_user }}
+  become: true
+  ansible.posix.authorized_key:
+    user: "{{ an_ansible_user }}"
+    state: present
+    key: "{{ an_ansible_user_ssh_authorized_key }}"

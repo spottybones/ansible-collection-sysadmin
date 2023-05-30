@@ -1,0 +1,5 @@
+---
+# defaults file for set_an_ansible_user
+an_ansible_user: ansible
+an_ansible_user_comment: Ansible User
+an_ansible_user_ssh_authorized_key: ''

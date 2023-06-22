@@ -8,14 +8,14 @@
 
 - name: Restart needed libraries/services
   become: true
-  ansible.builtin.command: needrestart -ra
+  ansible.builtin.command: needrestart -ra -freadline
   ignore_errors: true
   failed_when: false
   changed_when: false
 
 - name: Trigger reboot on new kernel installation
   become: true
-  ansible.builtin.command: needrestart -k
+  ansible.builtin.command: needrestart -p -freadline
   register: restart_needed
   ignore_errors: true
   failed_when: false

@@ -1,0 +1,23 @@
+---
+- name: Upgrade all packages
+  become: true
+  ansible.builtin.dnf:
+    name: "*"
+    update_cache: true
+    state: latest
+
+- name: Remove obsolete packages
+  become: true
+  ansible.builtin.dnf:
+    autoremove: true
+
+- name: Check to see if reboot required after update
+  become: true
+  ansible.builtin.command: needs-restarting -r
+  register: restart_needed
+  changed_when: false
+
+- name: Reboot if required
+  become: true
+  ansible.builtin.reboot:
+  when: '"Reboot should not be necessary." not in restart_needed.stdout'

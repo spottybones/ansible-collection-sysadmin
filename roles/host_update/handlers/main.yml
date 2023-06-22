@@ -1,2 +1,6 @@
 ---
 # handlers file for host_update
+- name: Reboot Host
+  become: true
+  ansible.builtin.reboot:
+    reboot_timeout: 3600

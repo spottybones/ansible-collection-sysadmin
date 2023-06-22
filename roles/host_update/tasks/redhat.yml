@@ -15,9 +15,8 @@
   become: true
   ansible.builtin.command: needs-restarting -r
   register: restart_needed
-  changed_when: false
-
-- name: Reboot if required
-  become: true
-  ansible.builtin.reboot:
-  when: '"Reboot should not be necessary." not in restart_needed.stdout'
+  ignore_errors: true
+  failed_when: false
+  changed_when: restart_needed.rc != 0
+  notify:
+    - Reboot Host

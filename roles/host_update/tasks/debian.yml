@@ -1,5 +1,5 @@
 ---
-- name: Upgrade all packages
+- name: Upgrade all packages using Debian 'apt'
   become: true
   ansible.builtin.apt:
     update_cache: true
@@ -8,22 +8,17 @@
 
 - name: Restart needed libraries/services
   become: true
-  ansible.builtin.command:
-    cmd: needrestart -ra
+  ansible.builtin.command: needrestart -ra
+  ignore_errors: true
+  failed_when: false
   changed_when: false
 
-- name: Find newest kernel number /boot
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      ls -1 /boot/vmlinuz* | sort -V | tail -1
-  args:
-    executable: /bin/bash
-  changed_when: false
-  register: latest_kernel
-
-- name: Reboot if newer kernel available
-  vars:
-    kernel_version: "{{ ansible_kernel }}"
-  ansible.builtin.reboot:
-  when: kernel_version not in latest_kernel.stdout
+- name: Trigger reboot on new kernel installation
+  become: true
+  ansible.builtin.command: needrestart -k
+  register: restart_needed
+  ignore_errors: true
+  failed_when: false
+  changed_when: restart_needed.rc != 0
+  notify:
+    - Reboot Host

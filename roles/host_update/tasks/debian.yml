@@ -15,7 +15,7 @@
 
 - name: Trigger reboot on new kernel installation
   become: true
-  ansible.builtin.command: needrestart -p -freadline
+  ansible.builtin.command: needrestart -lkp -freadline
   register: restart_needed
   ignore_errors: true
   failed_when: false

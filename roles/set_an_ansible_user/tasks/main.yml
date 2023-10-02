@@ -1,14 +1,26 @@
 ---
 # tasks file for set_an_ansible_user
+- name: Include variables (set_an_ansible_user) based on distro, or default if not found
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_distribution | lower }}.yml'
+        - '{{ ansible_os_family | lower }}.yml'
+        - main.yml
+      paths:
+        - vars
+        - defaults
+
 - name: Create {{ an_ansible_user_comment }} ({{ an_ansible_user }})
   become: true
   ansible.builtin.user:
     name: "{{ an_ansible_user }}"
     comment: "{{ an_ansible_user_comment }}"
-    groups: users,adm
+    groups: "{{ an_ansible_user_groups }}"
     append: true
     password_lock: true
-    shell: /bin/bash
+    shell: "{{ an_ansible_user_shell }}"
     state: present
 
 - name: Configure sudo access for {{ an_ansible_user }}

@@ -1,0 +1,3 @@
+---
+# vars file for set_an_ansible_user for Suse
+an_ansible_user_groups: users,admin

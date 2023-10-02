@@ -3,3 +3,5 @@
 an_ansible_user: ansible
 an_ansible_user_comment: Ansible User
 an_ansible_user_ssh_authorized_key: ''
+an_ansible_user_groups: users,adm
+an_ansible_user_shell: /bin/bash

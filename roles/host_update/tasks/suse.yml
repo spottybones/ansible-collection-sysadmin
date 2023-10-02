@@ -1,0 +1,9 @@
+---
+- name: Upgrade all packages using Suse Zypper
+  become: true
+  community.general.zypper:
+    update_cache: true
+    name: '*'
+    state: latest
+  notify:
+    - Reboot Host
